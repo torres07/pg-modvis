@@ -1,0 +1,27 @@
+ColorChecker 2005 – Color Match (8 bit),,,
+Color name,R',G',B'
+illuminant,255,255,255
+dark skin,111,85,72
+light skin,191,150,131
+blue sky,93,122,151
+foliage,96,103,72
+blue flower,124,132,170
+bluish green,118,180,172
+orange,212,132,70
+purplish blue,62,100,162
+moderate red,183,102,99
+purple,86,70,102
+yellow green,169,178,90
+orange yellow,223,162,75
+blue,24,75,139
+green,95,138,86
+red,165,77,63
+yellow,237,194,80
+magenta,176,108,145
+cyan,0,132,164
+white 9.5 (.05 D),245,245,243
+neutral 8 (.23 D),199,201,201
+neutral 6.5 (.44 D),160,161,162
+neutral 5 (.70 D),120,120,121
+neutral 3.5 (1.05 D),83,85,86
+black 2 (1.5 D),52,53,54
