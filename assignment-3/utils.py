@@ -2,11 +2,12 @@
 # @Author: pedrotorres
 # @Date:   2019-10-26 14:21:23
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-10-27 18:55:09
+# @Last Modified time: 2019-11-03 16:11:59
 
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 
 def read_points_2d(filename):
 	points = list()
@@ -92,3 +93,46 @@ def draw_epipolar_lines(F, img_left, img_right, pts_left, pts_right):
 		x = [p_l[0]/p_l[2], p_r[0]/p_r[2]]
 		y = [p_l[1]/p_l[2], p_r[1]/p_r[2]]
 		ax.plot(x, y, linewidth=1, c='blue')
+
+def visualize_points(points_2d, points_2d_projected):
+    plt.scatter(points_2d[:, 0], points_2d[:, 1], marker='s', c='red', label='Real points')
+    plt.scatter(points_2d_projected[:, 0], points_2d_projected[:, 1], marker='+', c='blue', label='Projected points')
+    plt.legend()
+    plt.show()
+
+def project_points(M, points_3d):
+    n = len(points_3d)
+    points_3d = np.concatenate((np.array(points_3d), np.ones((n, 1))), axis=1)
+    points_3d_projected = np.dot(M, points_3d.T).T
+    u, v = points_3d_projected[:, 0] / points_3d_projected[:, 2], points_3d_projected[:, 1] / points_3d_projected[:, 2]
+    points_2d = np.hstack((u[:, np.newaxis], v[:, np.newaxis]))
+
+    return points_2d
+
+def plot3dview(points_3d, camera_center):
+    """
+    Visualize the actual 3D points and the estimated 3D camera center.
+    You do not need to modify anything in this function, although you can if you
+    want to.
+    :param points_3d: N x 3
+    :param camera_center: 1 x 3
+    :return:
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    plt.subplots_adjust(left=0, bottom=0, right=1, top=1)
+    ax.scatter(points_3d[:, 0], points_3d[:, 1], points_3d[:, 2], c='blue',
+        marker='o', s=10, depthshade=0)
+    camera_center = camera_center.squeeze()
+    ax.scatter(camera_center[0],  camera_center[1], camera_center[2], c='red',
+        marker='x', s=20, depthshade=0)
+
+    # draw vertical lines connecting each point to ground
+    min_z = min(points_3d[:, 2])
+    
+    for p in points_3d:
+        x, y, z = p
+        ax.plot3D(xs=[x, x], ys=[y, y], zs=[z, min_z], c='black', linewidth=1)
+    
+    x, y, z = camera_center
+    ax.plot3D(xs=[x, x], ys=[y, y], zs=[z, min_z], c='black', linewidth=1)
