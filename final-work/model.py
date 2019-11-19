@@ -2,7 +2,7 @@
 # @Author: pedrotorres
 # @Date:   2019-10-21 16:40:52
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-10-21 16:46:54
+# @Last Modified time: 2019-11-18 15:41:54
 
 class DeepQ(object):
 	"""Summary
