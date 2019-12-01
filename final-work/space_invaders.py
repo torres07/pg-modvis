@@ -2,13 +2,14 @@
 # @Author: pedrotorres
 # @Date:   2019-11-30 14:19:21
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-12-01 10:14:12
+# @Last Modified time: 2019-12-01 16:03:02
 
 import numpy as np
 import gym
 import cv2
 from replay_buffer import ReplayBuffer
 from model import DeepQ
+import time
 
 import pickle
 
@@ -67,6 +68,7 @@ class SpaceInvaders(object):
 				temp_observation, temp_reward, temp_done, _ = self.env.step(predict_movement)
 				reward += temp_reward
 				self.process_buffer.append(temp_observation)
+				self.process_buffer = self.process_buffer[1:]
 				done = done | temp_done
 
 			# if observation_num % 10 == 0:
@@ -86,7 +88,7 @@ class SpaceInvaders(object):
 
 			if self.replay_buffer.size() > config.MIN_OBSERVATION:
 				s_batch, a_batch, r_batch, d_batch, s2_batch = self.replay_buffer.sample(config.MINIBATCH_SIZE)
-				self.model.train(s_batch, a_batch, r_batch, d_batch, s2_batch, observation_num)
+				self.model.train(s_batch, a_batch, r_batch, d_batch, s2_batch)
 				self.model.target_train()
 
 			# Save the network every 100000 iterations
@@ -104,3 +106,28 @@ class SpaceInvaders(object):
 
 		with open('rewards.pkl', 'wb') as f:
 			pickle.dump(rewards, f)
+
+	def simulate(self, ngames=1, usefps=False, fps=60.0):
+		scores = []
+
+		for i in range(ngames):
+			done = False
+			score = 0
+			self.env.reset()
+			self.env.render()
+
+			while not done:
+				state = self.convert_process_buffer()
+				predict_movement = self.model.predict_movement(state, 0)[0]
+				self.env.render()
+				observation, reward, done, _ = self.env.step(predict_movement)
+				score += reward
+				self.process_buffer.append(observation)
+				self.process_buffer = self.process_buffer[1:]
+				if usefps:
+					time.sleep(1.0/fps)
+
+			scores.append(score)
+
+		scores = np.array(scores)
+		print(np.max(scores))

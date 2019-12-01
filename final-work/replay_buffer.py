@@ -2,14 +2,14 @@
 # @Author: pedrotorres
 # @Date:   2019-10-21 15:22:15
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-10-21 16:45:13
+# @Last Modified time: 2019-12-01 16:01:55
 
 import random
 import numpy as np
 from collections import deque
 
 class ReplayBuffer(object):
-	"""docstring for ReplayBuffer
+	"""Buffer that stores experiences of the agent
 	
 	Attributes:
 	    buffer (collection.deque): buffer of experiences
@@ -29,7 +29,7 @@ class ReplayBuffer(object):
 		
 		Args:
 		    s (TYPE): State
-		    a (TYPE): Action
+		    a (int): Action
 		    r (float): Reward
 		    d (bool): End
 		    s_ (TYPE): Next state
