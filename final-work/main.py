@@ -8,6 +8,6 @@ from space_invaders import SpaceInvaders
 import config
 
 if __name__ == '__main__':
-	game_instance = SpaceInvaders()
-
-	game_instance.train(config.TOT_FRAME)
+    game_instance = SpaceInvaders()
+    game_instance.train(config.TOT_FRAME)
+    game_instance.model.save_network()

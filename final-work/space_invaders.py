@@ -2,13 +2,15 @@
 # @Author: pedrotorres
 # @Date:   2019-11-30 14:19:21
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-11-30 15:34:17
+# @Last Modified time: 2019-12-01 10:14:12
 
 import numpy as np
 import gym
 import cv2
 from replay_buffer import ReplayBuffer
 from model import DeepQ
+
+import pickle
 
 import config
 
@@ -40,6 +42,7 @@ class SpaceInvaders(object):
 		return np.concatenate(black_buffer, axis=2)
 		
 	def train(self, num_frames):
+		rewards = []
 		observation_num = 0
 		curr_state = self.convert_process_buffer()
 		epsilon = config.INITIAL_EPSILON
@@ -72,6 +75,7 @@ class SpaceInvaders(object):
 			if done:
 				print("Lived with maximum time ", alive_frame)
 				print("Earned a total of reward equal to ", total_reward)
+				rewards.append((total_reward, alive_frame))
 				self.env.reset()
 				alive_frame = 0
 				total_reward = 0
@@ -92,3 +96,11 @@ class SpaceInvaders(object):
 
 			alive_frame += 1
 			observation_num += 1
+		
+		with open('output.txt', 'w') as f:
+			for i in rewards:
+				f.write('{}, {}'.format(i[0], i[1]))
+				f.write('\n')
+
+		with open('rewards.pkl', 'wb') as f:
+			pickle.dump(rewards, f)

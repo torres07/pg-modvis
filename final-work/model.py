@@ -2,7 +2,7 @@
 # @Author: pedrotorres
 # @Date:   2019-10-21 16:40:52
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-11-30 15:31:55
+# @Last Modified time: 2019-11-30 16:17:53
 
 import numpy as np
 
@@ -62,6 +62,15 @@ class DeepQ(object):
 				targets[i, a_batch[i]] += config.DECAY_RATE * np.max(fut_action)
 
 		loss = self.model.train_on_batch(s_batch, targets)
+
+	def target_train(self):
+	    model_weights = self.model.get_weights()
+	    target_model_weights = self.target_model.get_weights()
+	    
+	    for i in range(len(model_weights)):
+	        target_model_weights[i] = config.TAU * model_weights[i] + (1 - config.TAU) * target_model_weights[i]
+	    
+	    self.target_model.set_weights(target_model_weights)		
 
 	def predict_movement(self, data, epsilon):
 		q_actions = self.model.predict(data.reshape(1, 84, 84, config.NUM_FRAMES), batch_size = 1)
