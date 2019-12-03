@@ -2,13 +2,13 @@
 # @Author: pedrotorres
 # @Date:   2019-11-30 14:05:15
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-12-01 16:07:40
+# @Last Modified time: 2019-12-01 16:17:43
 
-DECAY_RATE = 0.99 # parameter that tell
+DECAY_RATE = 0.99 # parameter to find optimal policy (how much Q-value will be updated)
 BUFFER_SIZE = 16384 # number of experiences that can be stored on the replay buffer
 MINIBATCH_SIZE = 64 # size of the batch used to re-train the network
-TOT_FRAME = 500000 # number of frames (observations) that the agent will use during training
-MIN_OBSERVATION = 5000 # minimum of observations seen before starting training
+TOT_FRAME = 1000 # number of frames (observations) that the agent will use during training
+MIN_OBSERVATION = 100 # minimum of observations seen before starting training
 EPSILON_DECAY = 1000000 # used to slowly decay learning rate
 INITIAL_EPSILON = 0.1 # initial chance of peform a random action
 FINAL_EPSILON = 0.01 # final chance of peform a random action

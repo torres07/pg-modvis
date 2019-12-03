@@ -2,7 +2,7 @@
 # @Author: pedrotorres
 # @Date:   2019-10-21 15:22:15
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-12-01 16:01:55
+# @Last Modified time: 2019-12-01 16:18:49
 
 import random
 import numpy as np
@@ -28,11 +28,11 @@ class ReplayBuffer(object):
 		"""Add a new experience in buffer
 		
 		Args:
-		    s (TYPE): State
+		    s (np.array): State (raw image)
 		    a (int): Action
 		    r (float): Reward
 		    d (bool): End
-		    s_ (TYPE): Next state
+		    s_ (np.array): Next state (raw image)
 		"""
 		experience = (s, a, r, d, s_)
 		

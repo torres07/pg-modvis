@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Summary
-"""
 # @Author: pedrotorres
 # @Date:   2019-10-21 16:40:52
 # @Last Modified by:   pedrotorres
-# @Last Modified time: 2019-12-01 16:05:26
+# @Last Modified time: 2019-12-01 19:19:59
 
 import numpy as np
 
@@ -91,11 +89,11 @@ class DeepQ(object):
 		"""Summary
 		
 		Args:
-		    data (TYPE): Description
-		    epsilon (TYPE): Description
+		    data (np.array): Raw image
+		    epsilon (float): Probability of perform a random action
 		
 		Returns:
-		    TYPE: Description
+		    (int, float): Optimal policy action, Q-value
 		"""
 		q_actions = self.model.predict(data.reshape(1, 84, 84, config.NUM_FRAMES), batch_size = 1)
 		opt_policy = np.argmax(q_actions)
@@ -107,18 +105,18 @@ class DeepQ(object):
 		return opt_policy, q_actions[0, opt_policy]
 
 	def save_network(self, path='ddqn.h5'):
-		"""Summary
+		"""Save model at specified path as h5 file
 		
 		Args:
-		    path (str, optional): Description
+		    path (str, optional): Path to save model
 		"""
 		self.model.save(path)
 		print("Successfully saved network.")
 
 	def load_network(self, path='ddqn.h5'):
-		"""Summary
+		"""Load modeal at specified path, must be h5 file
 		
 		Args:
-		    path (str, optional): Description
+		    path (str, optional): Path to model
 		"""
 		self.model = load_model(path)
